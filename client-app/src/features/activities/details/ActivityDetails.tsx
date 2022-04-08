@@ -1,15 +1,15 @@
+import { observer } from 'mobx-react-lite';
 import React from 'react';
 import { Button, Card, Image } from 'semantic-ui-react';
-import { Activity } from '../../../app/models/activity';
+import { useStore } from '../../../app/stores/store';
 
-interface Props {
-    activity: Activity;
-    cancelSelectActivity: () => void;
-    openForm: (id: string) => void;
-    closeForm: () => void;
-}
 
-export default function ActivityDetails({ activity, cancelSelectActivity, openForm }: Props) {
+export default function ActivityDetails() {
+    const { activityStore } = useStore();
+    const { selectedActivity: activity } = activityStore;
+
+    if (!activity) return <></>;
+
     return (
         <>
             <Card fluid>
@@ -25,8 +25,8 @@ export default function ActivityDetails({ activity, cancelSelectActivity, openFo
                 </Card.Content>
                 <Card.Content extra>
                     <Button.Group widths='2'>
-                        <Button onClick={() => openForm(activity.id)} basic color='blue' content='Edit' />
-                        <Button onClick={cancelSelectActivity} basic color='grey' content='Cancel' />
+                        <Button onClick={() => activityStore.openForm(activity.id)} basic color='blue' content='Edit' />
+                        <Button onClick={activityStore.cancelSelectedActivity} basic color='grey' content='Cancel' />
                     </Button.Group>
                 </Card.Content>
             </Card>
