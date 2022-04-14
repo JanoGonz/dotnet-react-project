@@ -27,7 +27,7 @@ export default observer(function RegisterForm() {
                     <Form className="ui form error" onSubmit={handleSubmit} autoComplete='off'>
                         <Header as='h2' content='Sign up to Reactivities!' color='teal' textAlign='center' />
                         <MyTextInput name='displayName' placeholder='Display name' />
-                        <MyTextInput name='username' placeholder='Username' />
+                        <MyTextInput name='username' placeholder='username' />
                         <MyTextInput name='email' placeholder='Email' />
                         <MyTextInput name='password' placeholder='Password' type='password' />
                         <ErrorMessage
