@@ -134,6 +134,7 @@ export default class ActivityStore {
             })
         }
     }
+    
     updateActivity = async (activity: ActivityFormValues) => {
         try {
             await agent.Activities.update(activity);
