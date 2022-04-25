@@ -12,7 +12,7 @@ export default function MyDateInput(props: Partial<ReactDatePickerProps>) {
             <DatePicker
                 {...field}
                 {...props}
-                selected={(field.value && new Date(field.value) || null)}
+                selected={(field.value && new Date(field.value)) || null}
                 onChange={value => helpers.setValue(value)}
             />
             {meta.touched && meta.error ? (
