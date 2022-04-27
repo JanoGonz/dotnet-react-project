@@ -30,7 +30,6 @@ namespace Application.Activities
                 _context = context;
             }
 
-            public DataContext Context { get; }
 
             public async Task<Result<List<ActivityDto>>> Handle(Query request, CancellationToken cancellationToken)
             {

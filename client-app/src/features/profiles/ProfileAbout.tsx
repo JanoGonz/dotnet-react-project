@@ -29,7 +29,7 @@ export default observer(function ProfileAbout({ profile }: Props) {
                 </Grid.Column>
                 <Grid.Column width={16}>
                     {!editMode && (
-                        <p>{profile.bio}</p>
+                        <p style={{whiteSpace: 'pre-wrap'}}>{profile.bio}</p>
                     )}
                     {editMode && isCurrentUser && (
                         <ProfileEditForm setEditMode={setEditMode}/>
