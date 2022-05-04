@@ -1,19 +1,28 @@
 import { observer } from 'mobx-react-lite';
-import React, { useEffect } from 'react';
-import { Grid } from 'semantic-ui-react';
+import React, { useEffect, useState } from 'react';
+import InfiniteScroll from 'react-infinite-scroller';
+import { Grid, Loader } from 'semantic-ui-react';
 import LoadingComponent from '../../../app/layout/LoadingComponent';
+import { PagingParams } from '../../../app/models/pagination';
 import { useStore } from '../../../app/stores/store';
 import ActivityFilters from './ActivityFilters';
 // import ActivityDetails from '../details/ActivityDetails';
 // import ActivityForm from '../form/ActivityForm';
 import ActivityList from './ActivityList';
+import ActivityListItemPlaceholder from './ActivityListItemPlaceholder';
 
 
 export default observer(function ActivityDashboard() {
 
     const { activityStore } = useStore();
-    const { loadActivities, activityRegistry } = activityStore;
+    const { loadActivities, activityRegistry, setPagingParams, pagination } = activityStore;
+    const [loadingNext, setLoadingNext] = useState(false);
 
+    function handleGetNext() {
+        setLoadingNext(true);
+        setPagingParams(new PagingParams(pagination!.currentPage + 1));
+        loadActivities().then(() => setLoadingNext(false))
+    }
 
     useEffect(() => {
         if (activityRegistry.size <= 1) {
@@ -22,12 +31,27 @@ export default observer(function ActivityDashboard() {
     }, [activityRegistry.size, loadActivities])
 
 
-    if (activityStore.loadingInitial) return <LoadingComponent content='Loading app' />
+    // if (activityStore.loadingInitial && !loadingNext) return <LoadingComponent content='Loading app' />
+
 
     return (
         <Grid>
             <Grid.Column width='10'>
-                <ActivityList />
+                {activityStore.loadingInitial && !loadingNext ? (
+                    <>
+                        <ActivityListItemPlaceholder />
+                        <ActivityListItemPlaceholder />
+                    </>
+                ) : (
+                    <InfiniteScroll
+                        pageStart={0}
+                        loadMore={handleGetNext}
+                        hasMore={!loadingNext && !!pagination && pagination.currentPage < pagination.totalPages}
+                        initialLoad={false}
+                    >
+                        <ActivityList />
+                    </InfiniteScroll>
+                )}
             </Grid.Column>
             <Grid.Column width='6'>
                 {/* Checkea si existe :) */}
@@ -37,6 +61,9 @@ export default observer(function ActivityDashboard() {
                     <ActivityForm />} */}
 
                 <ActivityFilters />
+            </Grid.Column>
+            <Grid.Column width={10}>
+                <Loader active={loadingNext} />
             </Grid.Column>
         </Grid>
     )
