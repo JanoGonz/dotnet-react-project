@@ -38,11 +38,11 @@ namespace Application.Profiles
                     query = query.Where(x => x.HostUsername == request.Username);
                 }
 
-                if (request.Params.Predicate == "past")
+                else if (request.Params.Predicate == "past")
                 {
                     query = query.Where(x => x.Date <= DateTime.UtcNow);
                 }
-                else if (request.Params.Predicate == "future")
+                else
                 {
                     query = query.Where(x => x.Date >= DateTime.UtcNow);
                 }
